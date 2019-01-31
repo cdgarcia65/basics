@@ -121,9 +121,6 @@
                     </button>
                 </div>
             </div>
-
-            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
             @yield('content')
         </main>
     </div>
@@ -133,6 +130,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
@@ -145,32 +143,87 @@
 <!-- Graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script>
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            datasets: [{
-                data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                borderWidth: 4,
-                pointBackgroundColor: '#007bff'
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
+    // Add user 
+    $('#add').click(function () {
+        $.ajax({
+            type: 'POST', 
+            url: 'users',
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'name': $('input[name=name]').val(),
+                'email': $('input[name=email]').val(),
+                'password': $('input[name=password]').val(),
             },
-            legend: {
-                display: false,
+            success: function (data) {
+                if ((data.errors)) {
+                    $('.error').removeClass('d-none');
+                    $('.error').text(data.errors.name);
+                    $('.error').text(data.errors.email);
+                    $('.error').text(data.errors.password);
+                } else {
+                    $('.error').remove();
+                    $('#table').append("<tr class='user-" + data.id + "'>"+
+                    "<td>" + data.id + "</td>"+
+                    "<td>" + data.name + "</td>"+
+                    "<td>" + data.email + "</td>"+
+                    "<td>" + 
+                    "    <a href='#' class='show-modal btn btn-link' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-eye'></span>"+
+                    "    </a>"+
+                    "    <a href='#' class='btn btn-link' data-toggle='modal' data-target='#edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-pencil'></span>"+
+                    "    </a>"+
+                    "    <a href='#' class='btn btn-link' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-trash'></span>"+
+                    "    </a>"+
+                    "</td>"+
+                    "</tr>");
+                }
+            },
+        });
+        $('#name').val();
+        $('#email').val();
+    });
+
+    $(document).on('click', '.edit', function () {
+        $('#footer_action_button').text(" Editar usuario");
+        $('#user-id').val($(this).data('id'));
+        $('.action-btn').addClass('edit-user');
+        $('.action-btn').addClass('delete-user');
+        $('#edit-name').val($(this).data('name'));
+        $('#edit-email').val($(this).data('email'));
+    });
+
+    $('.modal-footer').on('click', '.edit-user', function () {
+        $.ajax({
+            type: 'PUT',
+            url: 'users/' + $('#user-id').val(),
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'id': $('#user-id').val(),
+                'name': $('#edit-name').val(),
+                'email': $('#edit-email').val(),
+            },
+            success: function (data) {
+                $('.user-' + data.id).replaceWith(" "+
+                "<tr class='user-" + data.id + "'>"+
+                "   <td>" + data.id + "</td>"+
+                "   <td>" + data.name + "</td>"+
+                "   <td>" + data.email + "</td>"+
+                "   <td>" + 
+                    "    <a href='#' class='show-modal btn btn-link' data-toggle='modal' data-target='#show' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-eye'></span>"+
+                    "    </a>"+
+                    "    <a href='#' class='btn btn-link edit' data-toggle='modal' data-target='#edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-pencil'></span>"+
+                    "    </a>"+
+                    "    <a href='#' class='btn btn-link' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
+                    "        <span class='oi oi-trash'></span>"+
+                    "    </a>"+
+                "   </td>"+
+                "</tr>");
             }
-        }
+        });
     });
 </script>
 </body>

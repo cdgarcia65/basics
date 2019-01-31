@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -28,21 +30,26 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $data = request()->validate([
+        $validator = Validator::make(Input::all(), [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
-        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->getMessageBag()->toArray()]);
+        }
 
-        return redirect()->route('users');
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json($user);
+
     }
 
     public function edit(User $user)
@@ -50,27 +57,14 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(User $user)
+    public function update(Request $request, $id)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users')->ignore($user->id)
-            ],
-            'password' => ''
-        ]);
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
 
-        if ($data['password'] != null) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-
-        $user->update($data);
-        return redirect('users');
+        return response()->json($user);
     }
 
     public function destroy(User $user)

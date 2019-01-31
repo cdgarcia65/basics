@@ -22,21 +22,20 @@
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Pablo Perez" value="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="David García" value="{{ old('name') }}">
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Correo electronico</label>
-                    <input type="text" class="form-control" name="email" id="email" placeholder="pperez@example.com" value="{{ old('email') }}">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="ccristhiangarcia@gmail.com" value="{{ old('email') }}">
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Minimo 6 caracteres">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="***********">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Create user</button>
-                <a href="{{ route('users') }}" class="btn btn-link">Regresar al listado de usuarios</a>
             </form>
         </div>
     </div>
