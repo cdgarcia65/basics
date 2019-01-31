@@ -32,9 +32,6 @@
                 <form action="{{ route('users.destroy', $user) }}" method="POST">
                     {{ method_field('DELETE') }}
                     {{ csrf_field() }}
-                    <a href="#" class="btn btn-link" data-toggle="modal" data-target="#show" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}">
-                      <span class="oi oi-eye"></span>
-                    </a>
                     <a href="#" class="btn btn-link edit" data-toggle="modal" data-target="#edit" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}">
                       <span class="oi oi-pencil"></span>
                     </a>
@@ -86,55 +83,6 @@
       </div>
     </div>
     {{-- end form Create User --}}
-
-    {{-- form show user --}}
-    <div class="modal fade" id="show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    {{-- end form show user --}}
-
-    {{-- Delete modal --}}
-    {{-- <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>¿Está seguro que desea eliminar el usuario?</p>
-            <form role="modal">
-              <input type="hidden" id="user-delete-id">
-              {{ method_field('DELETE') }}
-              {{ csrf_field() }}
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger action-btn" id="delete-modal">Eliminar</button>
-          </div>
-        </div>
-      </div>
-    </div> --}}
-    {{-- end delete modal --}}
 
     {{-- form edit user --}}
     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

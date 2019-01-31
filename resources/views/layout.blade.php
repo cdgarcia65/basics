@@ -167,9 +167,6 @@
                     "<td>" + data.name + "</td>"+
                     "<td>" + data.email + "</td>"+
                     "<td>" + 
-                    "    <a href='#' class='show-modal btn btn-link' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
-                    "        <span class='oi oi-eye'></span>"+
-                    "    </a>"+
                     "    <a href='#' class='btn btn-link' data-toggle='modal' data-target='#edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
                     "        <span class='oi oi-pencil'></span>"+
                     "    </a>"+
@@ -211,9 +208,6 @@
                 "   <td>" + data.name + "</td>"+
                 "   <td>" + data.email + "</td>"+
                 "   <td>" + 
-                    "    <a href='#' class='show-modal btn btn-link' data-toggle='modal' data-target='#show' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
-                    "        <span class='oi oi-eye'></span>"+
-                    "    </a>"+
                     "    <a href='#' class='btn btn-link edit' data-toggle='modal' data-target='#edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "'>"+
                     "        <span class='oi oi-pencil'></span>"+
                     "    </a>"+
